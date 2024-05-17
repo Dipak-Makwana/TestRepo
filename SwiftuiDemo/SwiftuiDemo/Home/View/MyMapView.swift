@@ -10,8 +10,6 @@ import MapKit
 
 struct MyMapView: View {
     
-    @StateObject private var locationManager = LocationManager()
-    
     @State private var cameraPosition:  MapCameraPosition = .userLocation(fallback: .automatic)
     var body: some View {
         Map(position: $cameraPosition) {
@@ -20,9 +18,6 @@ struct MyMapView: View {
         .mapControls {
             MapUserLocationButton()
             
-        }
-        .onAppear {
-            locationManager.requestAuthorisation()
         }
     }
 }

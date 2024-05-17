@@ -10,13 +10,33 @@ import MapKit
 
 class LocationManager: NSObject, ObservableObject {
     private let locationManager = CLLocationManager()
-    @Published var authorisationStatus: CLAuthorizationStatus = .notDetermined
-
+    @Published var authorizationStatus: CLAuthorizationStatus = .notDetermined
+    @Published var userLocation: CLLocation?
+    @Published var isAuthorized: Bool = false
+    
     override init() {
         super.init()
         self.locationManager.delegate = self
+        startLocationService()
     }
-
+    
+    func startLocationService() {
+        if authorizationStatus == .authorizedWhenInUse || authorizationStatus == .authorizedAlways {
+            isAuthorized = true
+            locationManager.startUpdatingLocation()
+        }
+        else {
+            locationManager.requestWhenInUseAuthorization()
+        }
+    }
+    
+//    var isAuthorized: Bool {
+//        if authorizationStatus == .authorizedWhenInUse || authorizationStatus == .authorizedAlways {
+//            return true
+//        }
+//        return false
+//    }
+    
     public func requestAuthorisation(always: Bool = false) {
         if always {
             self.locationManager.requestAlwaysAuthorization()
@@ -27,9 +47,9 @@ class LocationManager: NSObject, ObservableObject {
 }
 
 extension LocationManager: CLLocationManagerDelegate {
-
+    
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        self.authorisationStatus = status
+        self.authorizationStatus = status
         
         switch status {
         case .notDetermined:
@@ -39,11 +59,19 @@ extension LocationManager: CLLocationManagerDelegate {
         case .denied:
             self.locationManager.requestWhenInUseAuthorization()
         case .authorizedAlways:
-            self.locationManager.requestWhenInUseAuthorization()
+            startLocationService()
         case .authorizedWhenInUse:
-            self.locationManager.requestWhenInUseAuthorization()
+            startLocationService()
         @unknown default:
-            self.locationManager.requestWhenInUseAuthorization()
+            startLocationService()
         }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        userLocation = locations.last
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        debugPrint("Error in Location Manager \(error.localizedDescription)")
     }
 }

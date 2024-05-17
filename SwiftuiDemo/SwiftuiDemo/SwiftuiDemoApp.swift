@@ -9,6 +9,7 @@ import SwiftUI
 
 @main
 struct SwiftuiDemoApp: App {
+    @State private var locationManager = LocationManager()
     // to get update the status of Network Changes
     @State private var networkMonitor = NetworkMonitor()
     // Get error in whole  application
@@ -23,9 +24,19 @@ struct SwiftuiDemoApp: App {
 //                .modifier(ErrorAlert(error: $appError, displayType: .alert))
 //                .environment(networkMonitor)
             
-            MyMapView()
+            if locationManager.isAuthorized {
+                MyMapView()
+            }
+            else {
+                VStack {
+                    Text("We need your help to grant location permission")
+                    Button("Grant Persmission") {
+                        
+                    }
+                    .padding()
+                }
+            }
         }
-         
     }
 }
     

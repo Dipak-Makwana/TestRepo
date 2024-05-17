@@ -68,7 +68,7 @@ extension HomeViewModel: HomeServiceProtocol {
     }
     
     private func checkBadURL(urlString: String) throws {
-        guard let url = URL(string: urlString) else {
+        guard let _ = URL(string: urlString) else {
             throw ErrorType.badURL
         }
     }
