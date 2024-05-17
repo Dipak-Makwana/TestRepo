@@ -22,7 +22,6 @@ struct MyMapView: View {
             
         }
         .onAppear {
-//            debugPrint(loca)
             locationManager.requestAuthorisation()
         }
     }
