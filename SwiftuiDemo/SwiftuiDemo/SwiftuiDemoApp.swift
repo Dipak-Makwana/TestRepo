@@ -26,17 +26,15 @@ struct SwiftuiDemoApp: App {
             
             if locationManager.isAuthorized {
                 MyMapView()
+                    
             }
             else {
-                VStack {
-                    Text("We need your help to grant location permission")
-                    Button("Grant Persmission") {
-                        
-                    }
-                    .padding()
-                }
+                LocationDeniedView()
             }
         }
+        .modelContainer(for: Destination.self)
+        .environmentObject(locationManager)
+        
     }
 }
     

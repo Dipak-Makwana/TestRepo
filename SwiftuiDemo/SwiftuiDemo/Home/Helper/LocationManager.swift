@@ -8,7 +8,8 @@
 import Foundation
 import MapKit
 
-class LocationManager: NSObject, ObservableObject {
+//@Observable
+class LocationManager: NSObject ,ObservableObject{
     private let locationManager = CLLocationManager()
     @Published var authorizationStatus: CLAuthorizationStatus = .notDetermined
     @Published var userLocation: CLLocation?
@@ -72,6 +73,7 @@ extension LocationManager: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        isAuthorized = false 
         debugPrint("Error in Location Manager \(error.localizedDescription)")
     }
 }
