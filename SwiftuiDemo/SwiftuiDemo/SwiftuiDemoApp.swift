@@ -14,30 +14,41 @@ struct SwiftuiDemoApp: App {
     @State private var networkMonitor = NetworkMonitor()
     // Get error in whole  application
     @State private var appError: DemoError?
+    @State private var isLanchScreenActive: Bool = true
     
     var body: some Scene {
         WindowGroup {
-//            ContentView()
-//                .environment(\.showError) { error, instruction  in
-//                    appError = DemoError(error,instruction,isNeedToDisplay: true)
-//                }
-//                .modifier(ErrorAlert(error: $appError, displayType: .alert))
-//                .environment(networkMonitor)
-            
-            if locationManager.isAuthorized {
-                MyMapView()
-                    
+            ZStack {
+                if isLanchScreenActive {
+                    LaunchScreenView()
+                }
+                else {
+                    if locationManager.isAuthorized {
+                        ContentView()
+                            .environment(\.showError) { error, instruction  in
+                                appError = DemoError(error,instruction,isNeedToDisplay: true)
+                            }
+                            .modifier(ErrorAlert(error: $appError, displayType: .alert))
+                            .environment(networkMonitor)
+                    }
+                    else {
+                        LocationDeniedView()
+                    }
+                }
             }
-            else {
-                LocationDeniedView()
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                    self.isLanchScreenActive.toggle()
+                })
             }
         }
         .modelContainer(for: Destination.self)
         .environmentObject(locationManager)
+        .environment(networkMonitor)
         
     }
 }
-    
+
 /*
  // let timer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
  

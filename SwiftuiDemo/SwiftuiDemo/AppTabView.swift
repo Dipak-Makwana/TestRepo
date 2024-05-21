@@ -43,7 +43,7 @@ struct TabItemView: View  {
 
 enum TabItem: Hashable , Identifiable,CaseIterable  {
     case home
-    case search
+    case destination
     case map
     case cart
     case profile
@@ -55,7 +55,7 @@ extension TabItem {
     var image: String? {
         switch self {
         case .home: "house.and.flag.circle"
-        case .search: "house.and.flag.circle"
+        case .destination: "house.and.flag.circle"
         case .map: "house.and.flag.circle"
         case .cart: "house.and.flag.circle"
         case .profile: "house.and.flag.circle"
@@ -65,7 +65,7 @@ extension TabItem {
     var title: String? {
         switch self {
         case .home: "Home"
-        case .search: "Search"
+        case .destination: "Search"
         case .map: "Map"
         case .cart: "Cart"
         case .profile: "Profile"
@@ -75,7 +75,7 @@ extension TabItem {
     var tag: Int {
         switch self {
         case .home: return 0
-        case .search: return  1
+        case .destination: return  1
         case .map: return 2
         case .cart: return 3
         case .profile:return 4
@@ -86,8 +86,8 @@ extension TabItem {
         switch self {
         case .home:
             TabItemView(tabItem: .home)
-        case .search:
-            TabItemView(tabItem: .search)
+        case .destination:
+            TabItemView(tabItem: .destination)
         case .map:
             TabItemView(tabItem: .map)
         case .cart:
@@ -102,8 +102,8 @@ extension TabItem {
         switch self {
         case .home:
             HomeView()
-        case .search:
-           SearchView()
+        case .destination:
+            DestinationView()
         case .map:
             MapView()
         case .cart:
@@ -125,7 +125,11 @@ struct AppTabView: View {
                     .tag(screen.tag)
                     .tabItem { screen.label }
             }
+            .toolbarBackground(.appBlue.opacity(0.8), for: .tabBar)
+            .toolbarBackground(.visible, for: .tabBar)
+            .toolbarColorScheme(.dark, for: .tabBar)
         }
+       
     }
 }
 

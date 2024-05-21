@@ -18,11 +18,14 @@
 		ED09ED5E2BF743A0001E3E68 /* LocationDeniedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED09ED5D2BF743A0001E3E68 /* LocationDeniedView.swift */; };
 		ED12BCED2BECC92D00F56FEC /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED12BCEC2BECC92D00F56FEC /* NetworkMonitor.swift */; };
 		ED1E244D2BDE79AC00C0FB02 /* HomeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1E244C2BDE79AC00C0FB02 /* HomeDetailView.swift */; };
+		ED3A44ED2BFBAF1A00520FBA /* LaunchScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3A44EC2BFBAF1A00520FBA /* LaunchScreenView.swift */; };
+		ED97DB932BFB6A9000EA472D /* DestinationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED97DB922BFB6A9000EA472D /* DestinationView.swift */; };
 		EDC674BF2BDF8296006AECB0 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC674BE2BDF8296006AECB0 /* ErrorHandler.swift */; };
 		EDC674C22BDF82E6006AECB0 /* URLString.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC674C12BDF82E6006AECB0 /* URLString.swift */; };
 		EDC674C42BDF87E0006AECB0 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC674C32BDF87E0006AECB0 /* ErrorView.swift */; };
 		EDC674C62BDF8E72006AECB0 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC674C52BDF8E72006AECB0 /* ApiClient.swift */; };
 		EDCEB27B2BEE3D8A009FAA4F /* StringConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCEB27A2BEE3D8A009FAA4F /* StringConstant.swift */; };
+		EDD19BE42BFC5A19008A0870 /* SampleLocations.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD19BE32BFC5A19008A0870 /* SampleLocations.swift */; };
 		EDD83A852BDE9A6000E46AFF /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD83A842BDE9A6000E46AFF /* UserCell.swift */; };
 		EDD83A872BDE9DEC00E46AFF /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD83A862BDE9DEC00E46AFF /* Image.swift */; };
 		EDE876EB2BDA26B300D12F86 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE876EA2BDA26B300D12F86 /* Coordinator.swift */; };
@@ -66,11 +69,14 @@
 		ED09ED5D2BF743A0001E3E68 /* LocationDeniedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDeniedView.swift; sourceTree = "<group>"; };
 		ED12BCEC2BECC92D00F56FEC /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		ED1E244C2BDE79AC00C0FB02 /* HomeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDetailView.swift; sourceTree = "<group>"; };
+		ED3A44EC2BFBAF1A00520FBA /* LaunchScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenView.swift; sourceTree = "<group>"; };
+		ED97DB922BFB6A9000EA472D /* DestinationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationView.swift; sourceTree = "<group>"; };
 		EDC674BE2BDF8296006AECB0 /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 		EDC674C12BDF82E6006AECB0 /* URLString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLString.swift; sourceTree = "<group>"; };
 		EDC674C32BDF87E0006AECB0 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		EDC674C52BDF8E72006AECB0 /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
 		EDCEB27A2BEE3D8A009FAA4F /* StringConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringConstant.swift; sourceTree = "<group>"; };
+		EDD19BE32BFC5A19008A0870 /* SampleLocations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleLocations.swift; sourceTree = "<group>"; };
 		EDD83A842BDE9A6000E46AFF /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		EDD83A862BDE9DEC00E46AFF /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		EDE876EA2BDA26B300D12F86 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
@@ -198,6 +204,8 @@
 				EDC674C32BDF87E0006AECB0 /* ErrorView.swift */,
 				EDFDF1252BF4D3DD00760C95 /* MyMapView.swift */,
 				ED09ED5D2BF743A0001E3E68 /* LocationDeniedView.swift */,
+				ED97DB922BFB6A9000EA472D /* DestinationView.swift */,
+				ED3A44EC2BFBAF1A00520FBA /* LaunchScreenView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -217,6 +225,7 @@
 				EDD83A862BDE9DEC00E46AFF /* Image.swift */,
 				EDC674BE2BDF8296006AECB0 /* ErrorHandler.swift */,
 				EDEC1F912BFAFBA5005173EB /* MTPlacemark.swift */,
+				EDD19BE32BFC5A19008A0870 /* SampleLocations.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -351,6 +360,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDD19BE42BFC5A19008A0870 /* SampleLocations.swift in Sources */,
 				EDD83A852BDE9A6000E46AFF /* UserCell.swift in Sources */,
 				ED09ED5C2BF7070A001E3E68 /* LocationManager.swift in Sources */,
 				EDD83A872BDE9DEC00E46AFF /* Image.swift in Sources */,
@@ -366,9 +376,11 @@
 				EDFDF1262BF4D3DD00760C95 /* MyMapView.swift in Sources */,
 				EDEC1F922BFAFBA5005173EB /* MTPlacemark.swift in Sources */,
 				EDCEB27B2BEE3D8A009FAA4F /* StringConstant.swift in Sources */,
+				ED97DB932BFB6A9000EA472D /* DestinationView.swift in Sources */,
 				EDC674BF2BDF8296006AECB0 /* ErrorHandler.swift in Sources */,
 				EDC674C22BDF82E6006AECB0 /* URLString.swift in Sources */,
 				EDE876EB2BDA26B300D12F86 /* Coordinator.swift in Sources */,
+				ED3A44ED2BFBAF1A00520FBA /* LaunchScreenView.swift in Sources */,
 				EDFB16EF2BDB6BAC0072FEB0 /* AppTabView.swift in Sources */,
 				ED12BCED2BECC92D00F56FEC /* NetworkMonitor.swift in Sources */,
 			);

@@ -13,6 +13,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var selection: TabItem = .home
+    
     var body: some View {
         AppTabView(selection: $selection)
     }
@@ -83,17 +84,17 @@ struct SettingView: View {
 
 extension Text {
     func titleFont() -> some View {
-       // if #available(iOS 16.1, *) {
-            self
-                .font(.largeTitle)
-                .fontDesign(.rounded)
-                .fontWeight(.bold)
-                .fontWidth(.condensed)
-//        } else {
-//            // Fallback on earlier versions
-//            self
-//                .font(.largeTitle)
-//        }
+        // if #available(iOS 16.1, *) {
+        self
+            .font(.largeTitle)
+            .fontDesign(.rounded)
+            .fontWeight(.bold)
+            .fontWidth(.condensed)
+        //        } else {
+        //            // Fallback on earlier versions
+        //            self
+        //                .font(.largeTitle)
+        //        }
     }
 }
 
