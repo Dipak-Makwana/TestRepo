@@ -29,6 +29,9 @@ struct DestinationView: View {
                 searchTextField
             }
             .sheet(item: $selectedPlaceMark) { selectedPlace in
+                
+                Text(selectedPlace.name)
+                    .presentationDetents([.height(450)])
             }
             .onMapCameraChange(frequency: .onEnd, { context in
                 visibleRegion = context.region
@@ -125,21 +128,14 @@ struct DestinationView: View {
                     Group {
                         if place.destination != nil {
                             
-                            Annotation(place.name, coordinate: place.coordinate, content: {
-                                Image(systemName: "star.fill")
-                                    .imageScale(.large)
-                                    .foregroundStyle(.orange)
-                                    .padding(10)
-                                    .background(.white)
-                                    .clipShape(Circle())
-                            })
+                            Marker(place.name, systemImage: "star", coordinate: place.coordinate)
+                                .tint(.blue)
                         }
                             else {
                                 Marker(place.name, coordinate: place.coordinate)
                                     .tint(.red)
                             }
-                        }
-                    
+                    }.tag(place)
                 }
             }
         }
