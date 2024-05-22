@@ -47,31 +47,31 @@ extension Destination {
                 isStoredInMemoryOnly: true
             )
         )
-//        let paris = CLLocationCoordinate2D(latitude: 48.856788, longitude: 2.351077)
-//        let parisSpan = MKCoordinateSpan(latitudeDelta: 0.15, longitudeDelta: 0.15)
-        let paris = Destination(
-            name: "Paris",
-            latitude: 48.856788,
-            longitude: 2.351077,
+       
+        let ayodhya = Destination(
+            name: "Ayodhya ",
+            latitude: 26.795479,
+            longitude: 82.194316,
             latitudeDelta: 0.15,
             longitudeDelta: 0.15
         )
-        container.mainContext.insert(paris)
-        var placeMarks: [MTPlacemark] {
-            [
-                MTPlacemark(name: "Louvre Museum", address: "93 Rue de Rivoli, 75001 Paris, France", latitude: 48.861950, longitude: 2.336902),
-                MTPlacemark(name: "Sacré-Coeur Basilica", address: "Parvis du Sacré-Cœur, 75018 Paris, France", latitude: 48.886634, longitude: 2.343048),
-                MTPlacemark(name: "Eiffel Tower", address: "5 Avenue Anatole France, 75007 Paris, France", latitude: 48.858258, longitude: 2.294488),
-                MTPlacemark(name: "Moulin Rouge", address: "82 Boulevard de Clichy, 75018 Paris, France", latitude: 48.884134, longitude: 2.332196),
-                MTPlacemark(name: "Arc de Triomphe", address: "Place Charles de Gaulle, 75017 Paris, France", latitude: 48.873776, longitude: 2.295043),
-                MTPlacemark(name: "Gare Du Nord", address: "Paris, France", latitude: 48.880071, longitude: 2.354977),
-                MTPlacemark(name: "Notre Dame Cathedral", address: "6 Rue du Cloître Notre-Dame, 75004 Paris, France", latitude: 48.852972, longitude: 2.350004),
-                MTPlacemark(name: "Panthéon", address: "Place du Panthéon, 75005 Paris, France", latitude: 48.845616, longitude: 2.345996),
+        container.mainContext.insert(ayodhya)
+         var placeMarks: [MTPlacemark] {
+             [
+                MTPlacemark(name: "Ayodhya Airport", address: "",latitude: 26.748197,longitude: 82.150602),
+                MTPlacemark(name: "Shri Ram Janam Bhumi", address: "",latitude: 26.7892357,longitude: 82.1971316),
+                MTPlacemark(name: "Shri Ram Janam Bhumi-2", address: "",latitude: 26.796502220733597,longitude: 82.19752908913104),
+                MTPlacemark(name: "Shri Ram Janam Bhumi-3", address: "",latitude: 26.795913230561627,longitude: 82.19446605793306),
+                MTPlacemark(name: "Shri Hanuman Garhi", address: "",latitude: 26.795539558018277,longitude: 82.20227962536545),
+                MTPlacemark(name: "Dashrath Mahal", address: "",latitude: 26.796821804778002,longitude: 82.20053387333384),
+                MTPlacemark(name: "Hotel Surya Palace", address: "",latitude: 26.797795320577645,longitude: 82.21978402785206),
+                
             ]
         }
-        placeMarks.forEach {placemark in
-            paris.placemarks.append(placemark)
+        placeMarks.forEach { placemark in
+            ayodhya.placemarks.append(placemark)
         }
         return container
     }
 }
+

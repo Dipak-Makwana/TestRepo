@@ -26,10 +26,13 @@
 		EDC674C62BDF8E72006AECB0 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC674C52BDF8E72006AECB0 /* ApiClient.swift */; };
 		EDCEB27B2BEE3D8A009FAA4F /* StringConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCEB27A2BEE3D8A009FAA4F /* StringConstant.swift */; };
 		EDD19BE42BFC5A19008A0870 /* SampleLocations.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD19BE32BFC5A19008A0870 /* SampleLocations.swift */; };
+		EDD19BE62BFC87E2008A0870 /* DestinationListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD19BE52BFC87E2008A0870 /* DestinationListView.swift */; };
+		EDD19BE82BFCFCAE008A0870 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD19BE72BFCFCAE008A0870 /* LocationCell.swift */; };
 		EDD83A852BDE9A6000E46AFF /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD83A842BDE9A6000E46AFF /* UserCell.swift */; };
 		EDD83A872BDE9DEC00E46AFF /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD83A862BDE9DEC00E46AFF /* Image.swift */; };
 		EDE876EB2BDA26B300D12F86 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE876EA2BDA26B300D12F86 /* Coordinator.swift */; };
 		EDE876ED2BDA6F8C00D12F86 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE876EC2BDA6F8C00D12F86 /* HomeView.swift */; };
+		EDEAA3A92BFDB3EA00F3DED6 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDEAA3A82BFDB3EA00F3DED6 /* MapManager.swift */; };
 		EDEC1F902BFAFB91005173EB /* Destination.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDEC1F8F2BFAFB91005173EB /* Destination.swift */; };
 		EDEC1F922BFAFBA5005173EB /* MTPlacemark.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDEC1F912BFAFBA5005173EB /* MTPlacemark.swift */; };
 		EDFB16EF2BDB6BAC0072FEB0 /* AppTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB16EE2BDB6BAC0072FEB0 /* AppTabView.swift */; };
@@ -77,10 +80,13 @@
 		EDC674C52BDF8E72006AECB0 /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
 		EDCEB27A2BEE3D8A009FAA4F /* StringConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringConstant.swift; sourceTree = "<group>"; };
 		EDD19BE32BFC5A19008A0870 /* SampleLocations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleLocations.swift; sourceTree = "<group>"; };
+		EDD19BE52BFC87E2008A0870 /* DestinationListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationListView.swift; sourceTree = "<group>"; };
+		EDD19BE72BFCFCAE008A0870 /* LocationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
 		EDD83A842BDE9A6000E46AFF /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		EDD83A862BDE9DEC00E46AFF /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		EDE876EA2BDA26B300D12F86 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		EDE876EC2BDA6F8C00D12F86 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		EDEAA3A82BFDB3EA00F3DED6 /* MapManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
 		EDEC1F8F2BFAFB91005173EB /* Destination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Destination.swift; sourceTree = "<group>"; };
 		EDEC1F912BFAFBA5005173EB /* MTPlacemark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTPlacemark.swift; sourceTree = "<group>"; };
 		EDFB16EE2BDB6BAC0072FEB0 /* AppTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabView.swift; sourceTree = "<group>"; };
@@ -184,6 +190,18 @@
 			path = Helper;
 			sourceTree = "<group>";
 		};
+		EDEAA3AA2BFDBA1900F3DED6 /* MapView */ = {
+			isa = PBXGroup;
+			children = (
+				EDFDF1252BF4D3DD00760C95 /* MyMapView.swift */,
+				ED09ED5D2BF743A0001E3E68 /* LocationDeniedView.swift */,
+				ED97DB922BFB6A9000EA472D /* DestinationView.swift */,
+				EDD19BE52BFC87E2008A0870 /* DestinationListView.swift */,
+				EDD19BE72BFCFCAE008A0870 /* LocationCell.swift */,
+			);
+			path = MapView;
+			sourceTree = "<group>";
+		};
 		EDFB16F02BDBA8640072FEB0 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -198,13 +216,11 @@
 		EDFB16F12BDBA86E0072FEB0 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				EDEAA3AA2BFDBA1900F3DED6 /* MapView */,
 				EDE876EC2BDA6F8C00D12F86 /* HomeView.swift */,
 				ED1E244C2BDE79AC00C0FB02 /* HomeDetailView.swift */,
 				EDD83A842BDE9A6000E46AFF /* UserCell.swift */,
 				EDC674C32BDF87E0006AECB0 /* ErrorView.swift */,
-				EDFDF1252BF4D3DD00760C95 /* MyMapView.swift */,
-				ED09ED5D2BF743A0001E3E68 /* LocationDeniedView.swift */,
-				ED97DB922BFB6A9000EA472D /* DestinationView.swift */,
 				ED3A44EC2BFBAF1A00520FBA /* LaunchScreenView.swift */,
 			);
 			path = View;
@@ -226,6 +242,7 @@
 				EDC674BE2BDF8296006AECB0 /* ErrorHandler.swift */,
 				EDEC1F912BFAFBA5005173EB /* MTPlacemark.swift */,
 				EDD19BE32BFC5A19008A0870 /* SampleLocations.swift */,
+				EDEAA3A82BFDB3EA00F3DED6 /* MapManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -365,10 +382,12 @@
 				ED09ED5C2BF7070A001E3E68 /* LocationManager.swift in Sources */,
 				EDD83A872BDE9DEC00E46AFF /* Image.swift in Sources */,
 				ED0340042BD7720F00614F64 /* ContentView.swift in Sources */,
+				EDD19BE62BFC87E2008A0870 /* DestinationListView.swift in Sources */,
 				EDFB16F52BDBA91E0072FEB0 /* HomeViewModel.swift in Sources */,
 				ED1E244D2BDE79AC00C0FB02 /* HomeDetailView.swift in Sources */,
 				ED09ED5E2BF743A0001E3E68 /* LocationDeniedView.swift in Sources */,
 				EDE876ED2BDA6F8C00D12F86 /* HomeView.swift in Sources */,
+				EDEAA3A92BFDB3EA00F3DED6 /* MapManager.swift in Sources */,
 				EDEC1F902BFAFB91005173EB /* Destination.swift in Sources */,
 				ED0340022BD7720F00614F64 /* SwiftuiDemoApp.swift in Sources */,
 				EDC674C42BDF87E0006AECB0 /* ErrorView.swift in Sources */,
@@ -380,6 +399,7 @@
 				EDC674BF2BDF8296006AECB0 /* ErrorHandler.swift in Sources */,
 				EDC674C22BDF82E6006AECB0 /* URLString.swift in Sources */,
 				EDE876EB2BDA26B300D12F86 /* Coordinator.swift in Sources */,
+				EDD19BE82BFCFCAE008A0870 /* LocationCell.swift in Sources */,
 				ED3A44ED2BFBAF1A00520FBA /* LaunchScreenView.swift in Sources */,
 				EDFB16EF2BDB6BAC0072FEB0 /* AppTabView.swift in Sources */,
 				ED12BCED2BECC92D00F56FEC /* NetworkMonitor.swift in Sources */,

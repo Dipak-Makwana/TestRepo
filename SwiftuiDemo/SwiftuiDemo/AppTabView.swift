@@ -103,7 +103,7 @@ extension TabItem {
         case .home:
             HomeView()
         case .destination:
-            DestinationView()
+            DestinationListView()
         case .map:
             MapView()
         case .cart:
