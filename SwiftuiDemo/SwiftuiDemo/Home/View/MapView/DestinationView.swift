@@ -30,7 +30,7 @@ struct DestinationView: View {
             }
             .sheet(item: $selectedPlaceMark) { selectedPlace in
                 
-                Text(selectedPlace.name)
+                LocationDetailView(destination: selectedDestination,selectedPlacemark: selectedPlaceMark)
                     .presentationDetents([.height(450)])
             }
             .onMapCameraChange(frequency: .onEnd, { context in
@@ -122,24 +122,26 @@ struct DestinationView: View {
     }
     
     private var mapView: some View {
-        Map(position: $cameraPosition,selection: $selectedPlaceMark) {
-           
+        MapReader { proxy in
+            Map(position: $cameraPosition,selection: $selectedPlaceMark) {
                 ForEach(listPlaceMark) { place in
                     Group {
                         if place.destination != nil {
-                            
                             Marker(place.name, systemImage: "star", coordinate: place.coordinate)
                                 .tint(.blue)
                         }
-                            else {
-                                Marker(place.name, coordinate: place.coordinate)
-                                    .tint(.red)
-                            }
+                        else {
+                            Marker(place.name, coordinate: place.coordinate)
+                                .tint(.red)
+                        }
                     }.tag(place)
                 }
             }
         }
-    
+        .onTapGesture { position in
+            debugPrint(position)
+        }
+    }
 }
 
 #Preview {
