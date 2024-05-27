@@ -9,78 +9,100 @@ import SwiftUI
 import SwiftData
 import MapKit
 
+extension LocationDetailView {
+    var isChanged: Bool {
+        guard let selectedPlacemark else { return false }
+            return (name != selectedPlacemark.name || address != selectedPlacemark.address)
+    }
+}
+
 
 struct LocationDetailView: View {
     @Environment(\.dismiss) private var dismiss
-    var destination: Destination?
-    var selectedPlacemark: MTPlacemark?
     @State private var name: String = ""
     @State private var address: String = ""
-    
     @State private var lookArroundScene: MKLookAroundScene?
-    var isChanged: Bool {
-        //return true
-        guard let selectedPlacemark else { return false }
-            return (name != selectedPlacemark.name || address != selectedPlacemark.address)
+    var destination: Destination?
+    var selectedPlacemark: MTPlacemark?
+    @Binding var showRoute: Bool 
+   
+    private var nameAndAddressTextField: some View {
+        VStack(alignment: .leading) {
+            TextField("Name", text: $name)
+                .font(.title2)
+            TextField("Address", text: $address,axis: .vertical)
+                .font(.caption)
+        }
+        .textFieldStyle(.roundedBorder)
+    }
+    
+    private var updateButton: some View {
+        Button("Update") {
+            selectedPlacemark?.name = name.removeWhiteSpace()
+            selectedPlacemark?.address = address.removeWhiteSpace()
+            dismiss()
+        }
+        .frame(maxWidth: .infinity,alignment: .leading)
+        .buttonStyle(.borderedProminent)
+    }
+    private var closeButton: some View {
+        Button {
+            dismiss()
+        } label: {
+            Image(systemName: "xmark.circle.fill")
+                .imageScale(.large)
+                .foregroundStyle(.gray)
+        }
+    }
+    private var lookAroundView: some View {
+        LookAroundPreview(initialScene: lookArroundScene)
+            .frame(height: 200)
+            .padding()
+    }
+    private var  addOrRemoveButton: some View {
+        let inList = (selectedPlacemark != nil && selectedPlacemark?.destination != nil)
+        return Button {
+            if let selectedPlacemark {
+                if selectedPlacemark.destination == nil {
+                    destination?.placemarks.append(selectedPlacemark)
+                }
+                else {
+                    selectedPlacemark.destination = nil
+                }
+                dismiss()
+            }
+        } label: {
+            Label(inList ? "Remove" : "Add", systemImage: inList ? "minus.circle" : "plus.circle")
+        }
     }
     var body: some View {
         VStack {
             HStack {
-                VStack(alignment: .leading) {
-                    TextField("Name", text: $name)
-                        .font(.title2)
-                    TextField("Address", text: $address,axis: .vertical)
-                        .font(.caption)
-                }
-                .textFieldStyle(.roundedBorder)
+                nameAndAddressTextField
                 if isChanged {
                     Spacer()
-                    Button("Update") {
-                        selectedPlacemark?.name = name.trimmingCharacters(in: .whitespacesAndNewlines)
-                        selectedPlacemark?.address = address.trimmingCharacters(in: .whitespacesAndNewlines)
-                        dismiss()
-                    }
-                    .frame(maxWidth: .infinity,alignment: .leading)
-                    .buttonStyle(.borderedProminent)
+                    updateButton
                 }
-                
-                Button {
-                    dismiss()
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .imageScale(.large)
-                        .foregroundStyle(.gray)
-                }
+                closeButton
             }
-            if let lookArroundScene {
-                LookAroundPreview(initialScene: lookArroundScene)
-                    .frame(height: 200)
-                    .padding()
+            if let _  = lookArroundScene {
+                lookAroundView
             }
             else {
-                ContentUnavailableView("No Preview Available", systemImage: "eye.slash")
+                MyContentUnAvailableView(title: "No Preview Available",image: "eye.slash")
             }
             HStack {
                 Spacer()
-                if let destination {
-                    let inList = (selectedPlacemark != nil && selectedPlacemark?.destination != nil)
-                    Button {
-                        if let selectedPlacemark {
-                            if selectedPlacemark.destination == nil {
-                                destination.placemarks.append(selectedPlacemark)
-                            }
-                            else {
-                                selectedPlacemark.destination = nil
-                            }
-                            dismiss()
-                        }
-                    } label: {
-                        Label(inList ? "Remove" : "Add", systemImage: inList ? "minus.circle" : "plus.circle")
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(inList ? .red : .green)
-                    .disabled(name.isEmpty || isChanged)
-                }
+//                if let _ = destination {
+//                    let inList = (selectedPlacemark != nil && selectedPlacemark?.destination != nil)
+//                    addOrRemoveButton
+//                        .buttonStyle(.borderedProminent)
+//                        .tint(inList ? .red : .green)
+//                        .disabled(name.isEmpty || isChanged)
+//                }
+//                else {
+                    openInMapsButtons
+               // }
             }
             Spacer()
         }
@@ -88,10 +110,36 @@ struct LocationDetailView: View {
         .task(id: selectedPlacemark) {
              await fetchLookArroundScene()
         }
+        
         .onAppear {
             setDefaultValue()
         }
     }
+    private var openInMapsButtons: some View {
+        HStack {
+            mapButton
+            showRouteButton
+        }
+        .buttonStyle(.borderedProminent)
+    }
+    private var mapButton: some View {
+        Button("Open In Maps",systemImage: "map") {
+            if let selectedPlacemark {
+                let placemark = MKPlacemark(coordinate: selectedPlacemark.coordinate)
+                let mapItem = MKMapItem(placemark: placemark)
+                mapItem.name = selectedPlacemark.name
+                mapItem.openInMaps()
+            }
+        }
+        .fixedSize(horizontal: true, vertical: false)
+    }
+    private var showRouteButton: some View {
+        Button("Show Route",systemImage: "location.north") {
+            showRoute.toggle()
+        }
+        .fixedSize(horizontal: true, vertical: false)
+    }
+    
     private func fetchLookArroundScene() async {
         if let selectedPlacemark {
             lookArroundScene = nil
@@ -107,11 +155,26 @@ struct LocationDetailView: View {
     }
 }
 
-#Preview {
+#Preview("Destinatation Tab") {
     let container = Destination.preview
     let fetchDescriptor = FetchDescriptor<Destination>()
     let destination = try! container.mainContext.fetch(fetchDescriptor)[0]
     let placeMark = destination.placemarks.first
-    return LocationDetailView(destination: destination, selectedPlacemark: placeMark)
+    return LocationDetailView(destination: destination, selectedPlacemark: placeMark, showRoute: .constant(false))
     
+}
+
+#Preview("Destination Detail Tab") {
+    let container = Destination.preview
+    let fetchDescriptor = FetchDescriptor<MTPlacemark>()
+    let placemarks = try! container.mainContext.fetch(fetchDescriptor)
+    let placeMark = placemarks.first
+    return LocationDetailView(selectedPlacemark: placeMark, showRoute: .constant(false))
+    
+}
+
+extension String {
+    func removeWhiteSpace() -> String{
+        self.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
 }

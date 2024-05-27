@@ -23,12 +23,7 @@ struct DestinationListView: View {
                     contentUnAvailableView
                 }
                 else {
-                    List(destinations) { destination in
-                        NavigationLink(value: destination) {
-                            LocationCell(destination: destination)
-                        }
-                        
-                    }
+                    locationListView
                 }
             }
             .navigationDestination(for: Destination.self, destination: { destination in
@@ -36,36 +31,59 @@ struct DestinationListView: View {
             })
             .navigationTitle("My Destinations")
             .toolbar {
-                Button(action: {
-                    newDestination.toggle()
-                }, label: {
-                    Image(systemName: "plus.circle.fill")
-                })
+                toolBarAddButton
             }
             .alert("Enter Destination Name", isPresented: $newDestination, actions: {
-                TextField("Enter destination name", text: $locationName)
-                    .autocorrectionDisabled()
-                Button("OK") {
-                    if !locationName.isEmpty {
-                        let destination = Destination(name: locationName.trimmingCharacters(in: .whitespacesAndNewlines))
-                        modelContext.insert(destination)
-                        locationName = ""
-                        path.append(destination)
-                    }
-                }
-                Button("Cancel",role: .cancel) {}
+                alertTextField
+                alertOKButton
+                alertCancelButton
             }, message: {
                 Text("Create a new destination")
             })
         }
-        
+    }
+    private var locationListView: some View {
+        List(destinations) { destination in
+            NavigationLink(value: destination) {
+                LocationCell(destination: destination)
+            }
+        }
+    }
+    private var toolBarAddButton: some View {
+        Button(action: {
+            newDestination.toggle()
+        }, label: {
+            Image(systemName: "plus.circle.fill")
+        })
+
+    }
+    private var alertTextField: some View {
+        TextField("Enter destination name", text: $locationName)
+            .autocorrectionDisabled()
+    }
+    private var alertOKButton: some View {
+        Button("OK") {
+            if !locationName.isEmpty {
+                let destination = Destination(name: locationName.trimmingCharacters(in: .whitespacesAndNewlines))
+                modelContext.insert(destination)
+                locationName = ""
+                path.append(destination)
+            }
+        }
+    }
+    private var alertCancelButton: some View {
+        Button("Cancel",role: .cancel) {}   
     }
     private var contentUnAvailableView : some View {
-        ContentUnavailableView("No Destinations", systemImage: "globe.desk", description: Text("""
-                                                   1. You have not set any destinations yet. Tap on the \(Image(systemName: "plus.circle.fill")) button in the toolbar to begin.
-                                                   """))
-        .multilineTextAlignment(.leading)
-        .padding()
+        MyContentUnAvailableView(
+            title: "No Destinations",
+            image: "globe.desk",
+            description: """
+                                                   1. You have not set any destinations yet. Tap on the \(Image(
+                                                   systemName: "plus.circle.fill"
+                                                   )) button in the toolbar to begin.
+                                                   """
+        )
     }
 }
 

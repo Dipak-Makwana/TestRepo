@@ -30,14 +30,6 @@ class LocationManager: NSObject ,ObservableObject{
             locationManager.requestWhenInUseAuthorization()
         }
     }
-    
-//    var isAuthorized: Bool {
-//        if authorizationStatus == .authorizedWhenInUse || authorizationStatus == .authorizedAlways {
-//            return true
-//        }
-//        return false
-//    }
-    
     public func requestAuthorisation(always: Bool = false) {
         if always {
             self.locationManager.requestAlwaysAuthorization()

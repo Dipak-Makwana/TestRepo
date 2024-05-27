@@ -24,12 +24,7 @@ struct SwiftuiDemoApp: App {
                 }
                 else {
                     if locationManager.isAuthorized {
-                        ContentView()
-                            .environment(\.showError) { error, instruction  in
-                                appError = DemoError(error,instruction,isNeedToDisplay: true)
-                            }
-                            .modifier(ErrorAlert(error: $appError, displayType: .alert))
-                            .environment(networkMonitor)
+                        contentView
                     }
                     else {
                         LocationDeniedView()
@@ -37,18 +32,28 @@ struct SwiftuiDemoApp: App {
                 }
             }
             .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                    self.isLanchScreenActive.toggle()
-                })
+                hideLaunchScreen()
             }
         }
         .modelContainer(for: Destination.self)
         .environmentObject(locationManager)
         .environment(networkMonitor)
-        
+    }
+    
+    private func hideLaunchScreen() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+            self.isLanchScreenActive.toggle()
+        })
+    }
+    
+    private var contentView: some View {
+        ContentView()
+            .environment(\.showError) { error, instruction  in
+                appError = DemoError(error,instruction,isNeedToDisplay: true)
+            }
+            .modifier(ErrorAlert(error: $appError, displayType: .alert))
     }
 }
-
 /*
  // let timer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
  

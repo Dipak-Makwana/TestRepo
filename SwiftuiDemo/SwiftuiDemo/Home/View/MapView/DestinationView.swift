@@ -11,44 +11,99 @@ import SwiftData
 
 struct DestinationView: View {
     @Environment(\.modelContext) private var modelContext
+    @EnvironmentObject var locationManager: LocationManager
+    @Query(filter: #Predicate<MTPlacemark> {$0.destination == nil }) private var searchPlaceMarks: [MTPlacemark]
+    @FocusState private var searchFieldFocus: Bool
     @State private var cameraPosition: MapCameraPosition = .automatic
     @State private var visibleRegion: MKCoordinateRegion?
-    @Query(filter: #Predicate<MTPlacemark> {$0.destination == nil }) private var searchPlaceMarks: [MTPlacemark]
+    @State private var searchText: String = ""
+    @State private var selectedPlaceMark: MTPlacemark?
+    @State private var isManualMarker: Bool = false
+    
     private var listPlaceMark: [MTPlacemark] {
         searchPlaceMarks + selectedDestination.placemarks
     }
     var selectedDestination: Destination
-    @State private var searchText: String = ""
-    @FocusState private var searchFieldFocus: Bool
-    @State private var selectedPlaceMark: MTPlacemark?
+    
+    // Route
+    @State private var showRoute: Bool = false 
+    @State private var routeDisplaying: Bool = false
+    @State private var route: MKRoute?
+    @State private var routeDestination: MKMapItem?
+    @State private var timeInterval: TimeInterval?
+    @State private var transportType =  MKDirectionsTransportType.automobile
     
     var body: some View {
         setRegionView
         mapView
             .safeAreaInset(edge: .bottom) {
-                searchTextField
+                VStack {
+                    toggleMarker
+                    if !isManualMarker {
+                        searchTextField
+                    }
+                }
             }
             .sheet(item: $selectedPlaceMark) { selectedPlace in
-                
-                LocationDetailView(destination: selectedDestination,selectedPlacemark: selectedPlaceMark)
-                    .presentationDetents([.height(450)])
+                openLocationDetailView()
+            }
+            .task(id: selectedPlaceMark) {
+                if selectedPlaceMark != nil {
+                    routeDisplaying = false
+                    showRoute = false
+                    route = nil
+                    await fetchRoute()
+                }
+            }
+            .onChange(of: showRoute) {
+                selectedPlaceMark = nil 
+                if showRoute {
+                    withAnimation {
+                        routeDisplaying = true
+                        if let rect = route?.polyline.boundingMapRect {
+                            cameraPosition = .rect(rect)
+                        }
+                    }
+                }
             }
             .onMapCameraChange(frequency: .onEnd, { context in
                 visibleRegion = context.region
             })
             .onAppear {
-                MapManager.removeSearchResults(modelContext)
-                if let currentRegion = selectedDestination.region {
-                    cameraPosition = .region(currentRegion)
-                }
+                removeResult()
+                setRegion()
             }
             .onDisappear {
-                MapManager.removeSearchResults(modelContext)
+                removeResult()
             }
             .navigationTitle("Destination")
             .navigationBarTitleDisplayMode(.inline)
     }
     
+    private func openLocationDetailView() ->  some View {
+        LocationDetailView(destination: selectedDestination,selectedPlacemark: selectedPlaceMark, showRoute: $showRoute)
+            .presentationDetents([.height(450)])
+    }
+    private func setRegion() {
+        if let currentRegion = selectedDestination.region {
+            cameraPosition = .region(currentRegion)
+        }
+    }
+    private func removeResult() {
+        MapManager.removeSearchResults(modelContext)
+    }
+    private var toggleMarker: some View {
+        Toggle(isOn: $isManualMarker) {
+        Label("Tap marker placement is \(isManualMarker ?  "ON" : "OFF")", systemImage: isManualMarker ? "mappin.circle" : "mappin.slash.circle")
+        }
+        .fontWeight(.bold)
+        .padding(.horizontal)
+        .toggleStyle(.button)
+        .background(.ultraThinMaterial)
+        .onChange(of: isManualMarker) {
+            removeResult()
+        }
+    }
     private var searchTextField: some View {
         HStack {
             TextField("Search...", text: $searchText)
@@ -78,21 +133,24 @@ struct DestinationView: View {
                     }
                 }
             if !searchPlaceMarks.isEmpty {
-                Button {
-                    MapManager.removeSearchResults(modelContext)
-                } label: {
-                    Image(systemName: "mappin.slash.circle.fill")
-                        .imageScale(.large)
-                }
-                .foregroundStyle(.white)
-                .padding(8)
-                .background(.red)
-                .clipShape(.circle)
+                removeResultButton
             }
         }
         .padding()
-        
     }
+    private var removeResultButton: some View  {
+        Button {
+           removeResult()
+        } label: {
+            Image(systemName: "mappin.slash.circle.fill")
+                .imageScale(.large)
+        }
+        .foregroundStyle(.white)
+        .padding(8)
+        .background(.red)
+        .clipShape(.circle)
+    }
+    
     private var setRegionView: some View {
         @Bindable var destination = selectedDestination
         return VStack {
@@ -125,7 +183,8 @@ struct DestinationView: View {
         MapReader { proxy in
             Map(position: $cameraPosition,selection: $selectedPlaceMark) {
                 ForEach(listPlaceMark) { place in
-                    Group {
+                    
+                    if isManualMarker {
                         if place.destination != nil {
                             Marker(place.name, systemImage: "star", coordinate: place.coordinate)
                                 .tint(.blue)
@@ -134,12 +193,66 @@ struct DestinationView: View {
                             Marker(place.name, coordinate: place.coordinate)
                                 .tint(.red)
                         }
-                    }.tag(place)
+                    }
+                    else {
+                        if !showRoute {
+                            Group {
+                                if place.destination != nil {
+                                    Marker(place.name, systemImage: "star", coordinate: place.coordinate)
+                                        .tint(.blue)
+                                }
+                                else {
+                                    Marker(place.name, coordinate: place.coordinate)
+                                        .tint(.red)
+                                }
+                            }.tag(place)
+
+                        }
+                        else {
+                            if let routeDestination {
+                                Marker(item: routeDestination)
+                                    .tint(.green)
+                            }
+                        }
+                    }
+                    if let route, routeDisplaying {
+                        MapPolyline(route.polyline)
+                            .stroke(.blue,lineWidth: 6)
+                    }
+
+                   
                 }
+                            }
+            .onTapGesture { position in
+                if isManualMarker {
+                    if let coordinate = proxy.convert(position, from: .local) {
+                        let mtPlacemark = MTPlacemark(name: "", address: "", latitude: coordinate.latitude, longitude: coordinate.longitude)
+                        modelContext.insert(mtPlacemark)
+                        selectedPlaceMark = mtPlacemark
+                    }
+                }
+                debugPrint(position)
             }
         }
-        .onTapGesture { position in
-            debugPrint(position)
+        
+    }
+    
+    private func fetchRoute() async {
+        if let userLocation = locationManager.userLocation,let selectedPlaceMark {
+            let source = MKPlacemark(coordinate: userLocation.coordinate)
+            let routeSource = MKMapItem(placemark: source)
+            let destination = MKPlacemark(coordinate: selectedPlaceMark.coordinate)
+             routeDestination = MKMapItem(placemark: destination)
+            let request = MKDirections.Request()
+            routeDestination?.name = selectedPlaceMark.name
+            
+            request.source = routeSource
+            request.destination = routeDestination
+            
+            let direction = MKDirections(request: request)
+            let results = try? await direction.calculate()
+            route = results?.routes.first
+            timeInterval =  route?.expectedTravelTime
         }
     }
 }
@@ -151,5 +264,6 @@ struct DestinationView: View {
     return NavigationStack {
         DestinationView(selectedDestination: destination)
             .modelContainer(Destination.preview)
+        
     }
 }
