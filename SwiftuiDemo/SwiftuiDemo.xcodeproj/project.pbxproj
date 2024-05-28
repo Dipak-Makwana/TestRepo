@@ -20,6 +20,7 @@
 		ED1E244D2BDE79AC00C0FB02 /* HomeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1E244C2BDE79AC00C0FB02 /* HomeDetailView.swift */; };
 		ED3A44ED2BFBAF1A00520FBA /* LaunchScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3A44EC2BFBAF1A00520FBA /* LaunchScreenView.swift */; };
 		ED97DB932BFB6A9000EA472D /* DestinationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED97DB922BFB6A9000EA472D /* DestinationView.swift */; };
+		EDB4B04D2C05F599004B5F39 /* DirectionStepsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB4B04C2C05F599004B5F39 /* DirectionStepsView.swift */; };
 		EDC674BF2BDF8296006AECB0 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC674BE2BDF8296006AECB0 /* ErrorHandler.swift */; };
 		EDC674C22BDF82E6006AECB0 /* URLString.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC674C12BDF82E6006AECB0 /* URLString.swift */; };
 		EDC674C42BDF87E0006AECB0 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC674C32BDF87E0006AECB0 /* ErrorView.swift */; };
@@ -76,6 +77,7 @@
 		ED1E244C2BDE79AC00C0FB02 /* HomeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDetailView.swift; sourceTree = "<group>"; };
 		ED3A44EC2BFBAF1A00520FBA /* LaunchScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenView.swift; sourceTree = "<group>"; };
 		ED97DB922BFB6A9000EA472D /* DestinationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationView.swift; sourceTree = "<group>"; };
+		EDB4B04C2C05F599004B5F39 /* DirectionStepsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionStepsView.swift; sourceTree = "<group>"; };
 		EDC674BE2BDF8296006AECB0 /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 		EDC674C12BDF82E6006AECB0 /* URLString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLString.swift; sourceTree = "<group>"; };
 		EDC674C32BDF87E0006AECB0 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 				EDD19BE72BFCFCAE008A0870 /* LocationCell.swift */,
 				EDEAA3AB2BFDF91500F3DED6 /* LocationDetailView.swift */,
 				EDDEAF172C00606700D7A9DC /* MyContentUnAvailableView.swift */,
+				EDB4B04C2C05F599004B5F39 /* DirectionStepsView.swift */,
 			);
 			path = MapView;
 			sourceTree = "<group>";
@@ -389,6 +392,7 @@
 				EDD83A872BDE9DEC00E46AFF /* Image.swift in Sources */,
 				ED0340042BD7720F00614F64 /* ContentView.swift in Sources */,
 				EDDEAF182C00606700D7A9DC /* MyContentUnAvailableView.swift in Sources */,
+				EDB4B04D2C05F599004B5F39 /* DirectionStepsView.swift in Sources */,
 				EDD19BE62BFC87E2008A0870 /* DestinationListView.swift in Sources */,
 				EDFB16F52BDBA91E0072FEB0 /* HomeViewModel.swift in Sources */,
 				ED1E244D2BDE79AC00C0FB02 /* HomeDetailView.swift in Sources */,

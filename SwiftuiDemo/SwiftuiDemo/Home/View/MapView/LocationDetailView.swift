@@ -25,7 +25,18 @@ struct LocationDetailView: View {
     var destination: Destination?
     var selectedPlacemark: MTPlacemark?
     @Binding var showRoute: Bool 
-   
+    @Binding var timeInterval: TimeInterval?
+    @Binding var transportType: MKDirectionsTransportType
+    
+    var travelTime: String? {
+        guard let timeInterval else { return nil }
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .abbreviated
+        formatter.allowedUnits = [.hour,.minute]
+        return formatter.string(from: timeInterval)
+        
+    }
+    
     private var nameAndAddressTextField: some View {
         VStack(alignment: .leading) {
             TextField("Name", text: $name)
@@ -85,6 +96,9 @@ struct LocationDetailView: View {
                 }
                 closeButton
             }
+            if destination != nil {
+               travelOption
+            }
             if let _  = lookArroundScene {
                 lookAroundView
             }
@@ -110,10 +124,37 @@ struct LocationDetailView: View {
         .task(id: selectedPlacemark) {
              await fetchLookArroundScene()
         }
+        
         .onAppear {
             setDefaultValue()
         }
     }
+    private var travelOption: some View {
+        HStack {
+            Button {
+                transportType = .automobile
+            } label: {
+                Image(systemName: "car")
+                    .imageScale(.large)
+                    .symbolVariant(transportType == .automobile ? .circle : .none)
+            }
+            Button {
+                transportType = .walking
+            } label: {
+                Image(systemName: "figure.walk")
+                    .imageScale(.large)
+                    .symbolVariant(transportType == .walking ? .circle : .none)
+            }
+            if let travelTime {
+                let prefix = transportType == .automobile ? "Driving" : "Walking"
+                Text("\(prefix) Time: \(travelTime)")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            Spacer()
+        }
+    }
+    
     private var openInMapsButtons: some View {
         HStack {
             mapButton
@@ -159,7 +200,7 @@ struct LocationDetailView: View {
     let fetchDescriptor = FetchDescriptor<Destination>()
     let destination = try! container.mainContext.fetch(fetchDescriptor)[0]
     let placeMark = destination.placemarks.first
-    return LocationDetailView(destination: destination, selectedPlacemark: placeMark, showRoute: .constant(false))
+    return LocationDetailView(destination: destination, selectedPlacemark: placeMark, showRoute: .constant(false),timeInterval: .constant(nil),transportType: .constant(.automobile))
     
 }
 
@@ -168,7 +209,7 @@ struct LocationDetailView: View {
     let fetchDescriptor = FetchDescriptor<MTPlacemark>()
     let placemarks = try! container.mainContext.fetch(fetchDescriptor)
     let placeMark = placemarks.first
-    return LocationDetailView(selectedPlacemark: placeMark, showRoute: .constant(false))
+    return LocationDetailView(selectedPlacemark: placeMark, showRoute: .constant(false),timeInterval: .constant(nil),transportType: .constant(.automobile))
     
 }
 

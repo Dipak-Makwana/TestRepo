@@ -20,13 +20,15 @@ struct DestinationView: View {
     @State private var selectedPlaceMark: MTPlacemark?
     @State private var isManualMarker: Bool = false
     
+    
     private var listPlaceMark: [MTPlacemark] {
         searchPlaceMarks + selectedDestination.placemarks
     }
     var selectedDestination: Destination
     
     // Route
-    @State private var showRoute: Bool = false 
+    @State private var showSteps: Bool = false
+    @State private var showRoute: Bool = false
     @State private var routeDisplaying: Bool = false
     @State private var route: MKRoute?
     @State private var routeDestination: MKMapItem?
@@ -34,6 +36,7 @@ struct DestinationView: View {
     @State private var transportType =  MKDirectionsTransportType.automobile
     
     var body: some View {
+        // UserAnnotation()
         setRegionView
         mapView
             .safeAreaInset(edge: .bottom) {
@@ -45,20 +48,36 @@ struct DestinationView: View {
                             .padding(16)
                     }
                     if routeDisplaying {
-                        Button("Clear Route",systemImage: "xmark.circle.fill") {
-                            resetRouteValue()
-                            updateCameraPosition()
+                        HStack {
+                            Button("Clear Route",systemImage: "xmark.circle.fill") {
+                                resetRouteValue()
+                                updateCameraPosition()
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .fixedSize(horizontal: true, vertical: false)
+                            .padding(.bottom,16)
+                            
+                            Button("Show Steps",systemImage: "location.north") {
+                                showSteps.toggle()
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .fixedSize(horizontal: true, vertical: false)
+                            .padding(.bottom,16)
+                            
+                            .sheet(isPresented: $showSteps, content: {
+                                DirectionStepsView(route: $route, transportType: $transportType)
+                            })
                         }
-                        .buttonStyle(.borderedProminent)
-                        .padding(.bottom,16)
                     }
-
                 }
             }
             .sheet(item: $selectedPlaceMark) { selectedPlace in
                 openLocationDetailView()
             }
             .task(id: selectedPlaceMark) {
+                await fetchRoute()
+            }
+            .task(id: transportType) {
                 await fetchRoute()
             }
             .onChange(of: showRoute) {
@@ -103,7 +122,7 @@ struct DestinationView: View {
         }
     }
     private func openLocationDetailView() ->  some View {
-        LocationDetailView(destination: selectedDestination,selectedPlacemark: selectedPlaceMark, showRoute: $showRoute)
+        LocationDetailView(destination: selectedDestination,selectedPlacemark: selectedPlaceMark, showRoute: $showRoute,timeInterval: $timeInterval,transportType: $transportType)
             .presentationDetents([.height(450)])
     }
     private func setRegion() {
@@ -116,7 +135,7 @@ struct DestinationView: View {
     }
     private var toggleMarker: some View {
         Toggle(isOn: $isManualMarker) {
-        Label("Tap marker placement is \(isManualMarker ?  "ON" : "OFF")", systemImage: isManualMarker ? "mappin.circle" : "mappin.slash.circle")
+            Label("Tap marker placement is \(isManualMarker ?  "ON" : "OFF")", systemImage: isManualMarker ? "mappin.circle" : "mappin.slash.circle")
         }
         .fontWeight(.bold)
         .padding(.horizontal)
@@ -150,7 +169,6 @@ struct DestinationView: View {
                 removeResultButton
             }
         }
-        //.padding()
     }
     private var clearImage: some View {
         Image(systemName: "xmark.circle.fill")
@@ -168,11 +186,10 @@ struct DestinationView: View {
             )
             searchText = ""
         }
-
     }
     private var removeResultButton: some View  {
         Button {
-           removeResult()
+            removeResult()
         } label: {
             Image(systemName: "mappin.slash.circle.fill")
                 .imageScale(.large)
@@ -194,7 +211,7 @@ struct DestinationView: View {
                 Text("Name")
             }
             regionButton
-                    }
+        }
         .padding(.horizontal)
     }
     private var regionButton: some View {
@@ -216,7 +233,7 @@ struct DestinationView: View {
             destination.latitudeDelta = visibleRegion.span.latitudeDelta
             destination.longitudeDelta = visibleRegion.span.longitudeDelta
         }
-
+        
     }
     private func markerWithSystemImage(_ place: MTPlacemark) -> Marker<Label<Text,Image>> {
         return Marker(place.name, systemImage: "star", coordinate: place.coordinate)
@@ -282,10 +299,16 @@ struct DestinationView: View {
         routeDisplaying = false
         showRoute = false
         route = nil
+        selectedPlaceMark = nil
+        //        if let userLocation = locationManager.userLocation {
+        //           // updateCameraPosition()
+        //        }
     }
     private func resetValues() {
         if selectedPlaceMark != nil {
-            resetRouteValue()
+            routeDisplaying = false
+            showRoute = false
+            route = nil
         }
     }
     private func fetchRoute() async {
@@ -294,13 +317,12 @@ struct DestinationView: View {
             let source = MKPlacemark(coordinate: userLocation.coordinate)
             let routeSource = MKMapItem(placemark: source)
             let destination = MKPlacemark(coordinate: selectedPlaceMark.coordinate)
-             routeDestination = MKMapItem(placemark: destination)
+            routeDestination = MKMapItem(placemark: destination)
             let request = MKDirections.Request()
             routeDestination?.name = selectedPlaceMark.name
-            
             request.source = routeSource
             request.destination = routeDestination
-            
+            request.transportType = transportType
             let direction = MKDirections(request: request)
             let results = try? await direction.calculate()
             route = results?.routes.first
