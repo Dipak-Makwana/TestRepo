@@ -110,7 +110,6 @@ struct LocationDetailView: View {
         .task(id: selectedPlacemark) {
              await fetchLookArroundScene()
         }
-        
         .onAppear {
             setDefaultValue()
         }

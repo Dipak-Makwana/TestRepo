@@ -39,32 +39,30 @@ struct DestinationView: View {
             .safeAreaInset(edge: .bottom) {
                 VStack {
                     toggleMarker
+                        .padding(.bottom,8)
                     if !isManualMarker {
                         searchTextField
+                            .padding(16)
                     }
+                    if routeDisplaying {
+                        Button("Clear Route",systemImage: "xmark.circle.fill") {
+                            resetRouteValue()
+                            updateCameraPosition()
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .padding(.bottom,16)
+                    }
+
                 }
             }
             .sheet(item: $selectedPlaceMark) { selectedPlace in
                 openLocationDetailView()
             }
             .task(id: selectedPlaceMark) {
-                if selectedPlaceMark != nil {
-                    routeDisplaying = false
-                    showRoute = false
-                    route = nil
-                    await fetchRoute()
-                }
+                await fetchRoute()
             }
             .onChange(of: showRoute) {
-                selectedPlaceMark = nil 
-                if showRoute {
-                    withAnimation {
-                        routeDisplaying = true
-                        if let rect = route?.polyline.boundingMapRect {
-                            cameraPosition = .rect(rect)
-                        }
-                    }
-                }
+                drawRoute()
             }
             .onMapCameraChange(frequency: .onEnd, { context in
                 visibleRegion = context.region
@@ -79,7 +77,31 @@ struct DestinationView: View {
             .navigationTitle("Destination")
             .navigationBarTitleDisplayMode(.inline)
     }
-    
+    func updateCameraPosition() {
+        if let userLocation = locationManager.userLocation {
+            let userRegion = MKCoordinateRegion(
+                center: userLocation.coordinate,
+                span: MKCoordinateSpan(
+                    latitudeDelta: 0.15,
+                    longitudeDelta: 0.15
+                )
+            )
+            withAnimation {
+                cameraPosition = .region(userRegion)
+            }
+        }
+    }
+    private func drawRoute() {
+        selectedPlaceMark = nil
+        if showRoute {
+            withAnimation {
+                routeDisplaying = true
+                if let rect = route?.polyline.boundingMapRect {
+                    cameraPosition = .rect(rect)
+                }
+            }
+        }
+    }
     private func openLocationDetailView() ->  some View {
         LocationDetailView(destination: selectedDestination,selectedPlacemark: selectedPlaceMark, showRoute: $showRoute)
             .presentationDetents([.height(450)])
@@ -114,29 +136,39 @@ struct DestinationView: View {
                 .overlay(alignment: .trailing) {
                     if searchFieldFocus {
                         Button {
-                            searchText = ""
-                            searchFieldFocus = false
-                        }label: {
-                            Image(systemName: "xmark.circle.fill")
+                            clearSearch()
+                        } label: {
+                            clearImage
                         }
                         .offset(x: -5)
                     }
                 }
                 .onSubmit {
-                    Task { @MainActor in
-                        await MapManager.searchPlaces(
-                            modelContext:modelContext,
-                            searchText:searchText,
-                            visibleRegion: visibleRegion
-                        )
-                        searchText = ""
-                    }
+                    saveSearchItem()
                 }
             if !searchPlaceMarks.isEmpty {
                 removeResultButton
             }
         }
-        .padding()
+        //.padding()
+    }
+    private var clearImage: some View {
+        Image(systemName: "xmark.circle.fill")
+    }
+    private func clearSearch() {
+        searchText = ""
+        searchFieldFocus = false
+    }
+    private func saveSearchItem() {
+        Task { @MainActor in
+            await MapManager.searchPlaces(
+                modelContext:modelContext,
+                searchText:searchText,
+                visibleRegion: visibleRegion
+            )
+            searchText = ""
+        }
+
     }
     private var removeResultButton: some View  {
         Button {
@@ -161,24 +193,37 @@ struct DestinationView: View {
             } label: {
                 Text("Name")
             }
-            HStack {
-                Text("Adjust map to set the region for your destination")
-                    .foregroundStyle(.secondary)
-                Spacer()
-                Button("Set Region") {
-                    if let visibleRegion {
-                        destination.latitude = visibleRegion.center.latitude
-                        destination.longitude = visibleRegion.center.longitude
-                        destination.latitudeDelta = visibleRegion.span.latitudeDelta
-                        destination.longitudeDelta = visibleRegion.span.longitudeDelta
+            regionButton
                     }
-                }
-                .buttonStyle(.borderedProminent)
-            }
-        }
         .padding(.horizontal)
     }
-    
+    private var regionButton: some View {
+        HStack {
+            Text("Adjust map to set the region for your destination")
+                .foregroundStyle(.secondary)
+            Spacer()
+            Button("Set Region") {
+                setRegionValues()
+            }
+            .buttonStyle(.borderedProminent)
+        }
+    }
+    private func setRegionValues() {
+        @Bindable var destination = selectedDestination
+        if let visibleRegion {
+            destination.latitude = visibleRegion.center.latitude
+            destination.longitude = visibleRegion.center.longitude
+            destination.latitudeDelta = visibleRegion.span.latitudeDelta
+            destination.longitudeDelta = visibleRegion.span.longitudeDelta
+        }
+
+    }
+    private func markerWithSystemImage(_ place: MTPlacemark) -> Marker<Label<Text,Image>> {
+        return Marker(place.name, systemImage: "star", coordinate: place.coordinate)
+    }
+    private func marker(_ place: MTPlacemark) -> Marker<Text> {
+        return Marker(place.name, coordinate: place.coordinate)
+    }
     private var mapView: some View {
         MapReader { proxy in
             Map(position: $cameraPosition,selection: $selectedPlaceMark) {
@@ -186,11 +231,11 @@ struct DestinationView: View {
                     
                     if isManualMarker {
                         if place.destination != nil {
-                            Marker(place.name, systemImage: "star", coordinate: place.coordinate)
+                            markerWithSystemImage(place)
                                 .tint(.blue)
                         }
                         else {
-                            Marker(place.name, coordinate: place.coordinate)
+                            marker(place)
                                 .tint(.red)
                         }
                     }
@@ -198,15 +243,14 @@ struct DestinationView: View {
                         if !showRoute {
                             Group {
                                 if place.destination != nil {
-                                    Marker(place.name, systemImage: "star", coordinate: place.coordinate)
+                                    markerWithSystemImage(place)
                                         .tint(.blue)
                                 }
                                 else {
-                                    Marker(place.name, coordinate: place.coordinate)
+                                    marker(place)
                                         .tint(.red)
                                 }
                             }.tag(place)
-
                         }
                         else {
                             if let routeDestination {
@@ -219,10 +263,8 @@ struct DestinationView: View {
                         MapPolyline(route.polyline)
                             .stroke(.blue,lineWidth: 6)
                     }
-
-                   
                 }
-                            }
+            }
             .onTapGesture { position in
                 if isManualMarker {
                     if let coordinate = proxy.convert(position, from: .local) {
@@ -234,10 +276,20 @@ struct DestinationView: View {
                 debugPrint(position)
             }
         }
-        
     }
     
+    private func resetRouteValue() {
+        routeDisplaying = false
+        showRoute = false
+        route = nil
+    }
+    private func resetValues() {
+        if selectedPlaceMark != nil {
+            resetRouteValue()
+        }
+    }
     private func fetchRoute() async {
+        resetValues()
         if let userLocation = locationManager.userLocation,let selectedPlaceMark {
             let source = MKPlacemark(coordinate: userLocation.coordinate)
             let routeSource = MKMapItem(placemark: source)
