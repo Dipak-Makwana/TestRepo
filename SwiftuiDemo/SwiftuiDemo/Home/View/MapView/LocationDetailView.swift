@@ -39,16 +39,16 @@ struct LocationDetailView: View {
     
     private var nameAndAddressTextField: some View {
         VStack(alignment: .leading) {
-            TextField("Name", text: $name)
+            TextField(str.name, text: $name)
                 .font(.title2)
-            TextField("Address", text: $address,axis: .vertical)
+            TextField(str.address , text: $address,axis: .vertical)
                 .font(.caption)
         }
         .textFieldStyle(.roundedBorder)
     }
     
     private var updateButton: some View {
-        Button("Update") {
+        Button(str.update) {
             selectedPlacemark?.name = name.removeWhiteSpace()
             selectedPlacemark?.address = address.removeWhiteSpace()
             dismiss()
@@ -60,7 +60,7 @@ struct LocationDetailView: View {
         Button {
             dismiss()
         } label: {
-            Image(systemName: "xmark.circle.fill")
+            Image(systemName: img.xmark_circle_fill)
                 .imageScale(.large)
                 .foregroundStyle(.gray)
         }
@@ -83,7 +83,7 @@ struct LocationDetailView: View {
                 dismiss()
             }
         } label: {
-            Label(inList ? "Remove" : "Add", systemImage: inList ? "minus.circle" : "plus.circle")
+            Label(inList ? str.remove : str.add, systemImage: inList ? img.minus_circle : img.plus_circle)
         }
     }
     var body: some View {
@@ -103,7 +103,7 @@ struct LocationDetailView: View {
                 lookAroundView
             }
             else {
-                MyContentUnAvailableView(title: "No Preview Available",image: "eye.slash")
+                MyContentUnAvailableView(title: str.noPreviewAvailabel,image: img.eye_slash)
             }
             HStack {
                 Spacer()
@@ -134,20 +134,20 @@ struct LocationDetailView: View {
             Button {
                 transportType = .automobile
             } label: {
-                Image(systemName: "car")
+                Image(systemName: img.car)
                     .imageScale(.large)
                     .symbolVariant(transportType == .automobile ? .circle : .none)
             }
             Button {
                 transportType = .walking
             } label: {
-                Image(systemName: "figure.walk")
+                Image(systemName: img.figure_walk)
                     .imageScale(.large)
                     .symbolVariant(transportType == .walking ? .circle : .none)
             }
             if let travelTime {
-                let prefix = transportType == .automobile ? "Driving" : "Walking"
-                Text("\(prefix) Time: \(travelTime)")
+                let prefix = transportType == .automobile ? str.driving : str.walking
+                Text("\(prefix) \(str.time): \(travelTime)")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -163,7 +163,7 @@ struct LocationDetailView: View {
         .buttonStyle(.borderedProminent)
     }
     private var mapButton: some View {
-        Button("Open In Maps",systemImage: "map") {
+        Button(str.openInMaps,systemImage: img.map) {
             if let selectedPlacemark {
                 let placemark = MKPlacemark(coordinate: selectedPlacemark.coordinate)
                 let mapItem = MKMapItem(placemark: placemark)
@@ -174,7 +174,7 @@ struct LocationDetailView: View {
         .fixedSize(horizontal: true, vertical: false)
     }
     private var showRouteButton: some View {
-        Button("Show Route",systemImage: "location.north") {
+        Button(str.showRoute,systemImage: img.location_north) {
             showRoute.toggle()
         }
         .fixedSize(horizontal: true, vertical: false)

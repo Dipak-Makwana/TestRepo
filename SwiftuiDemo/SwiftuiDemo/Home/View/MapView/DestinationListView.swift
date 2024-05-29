@@ -29,16 +29,16 @@ struct DestinationListView: View {
             .navigationDestination(for: Destination.self, destination: { destination in
                 DestinationView(selectedDestination: destination)
             })
-            .navigationTitle("My Destinations")
+            .navigationTitle(str.myDestination)
             .toolbar {
                 toolBarAddButton
             }
-            .alert("Enter Destination Name", isPresented: $newDestination, actions: {
+            .alert(str.enterDestinationName, isPresented: $newDestination, actions: {
                 alertTextField
                 alertOKButton
                 alertCancelButton
             }, message: {
-                Text("Create a new destination")
+                Text(str.createDestination)
             })
         }
     }
@@ -53,16 +53,16 @@ struct DestinationListView: View {
         Button(action: {
             newDestination.toggle()
         }, label: {
-            Image(systemName: "plus.circle.fill")
+            Image(systemName: img.plus_circle_fill)
         })
 
     }
     private var alertTextField: some View {
-        TextField("Enter destination name", text: $locationName)
+        TextField(str.enterDestinationName, text: $locationName)
             .autocorrectionDisabled()
     }
     private var alertOKButton: some View {
-        Button("OK") {
+        Button(str.ok) {
             if !locationName.isEmpty {
                 let destination = Destination(name: locationName.trimmingCharacters(in: .whitespacesAndNewlines))
                 modelContext.insert(destination)
@@ -72,15 +72,15 @@ struct DestinationListView: View {
         }
     }
     private var alertCancelButton: some View {
-        Button("Cancel",role: .cancel) {}   
+        Button(str.cancel,role: .cancel) {}   
     }
     private var contentUnAvailableView : some View {
         MyContentUnAvailableView(
-            title: "No Destinations",
-            image: "globe.desk",
+            title: str.noDestination,
+            image: img.globe_desk,
             description: """
                                                    1. You have not set any destinations yet. Tap on the \(Image(
-                                                   systemName: "plus.circle.fill"
+                                                   systemName: img.plus_circle_fill
                                                    )) button in the toolbar to begin.
                                                    """
         )

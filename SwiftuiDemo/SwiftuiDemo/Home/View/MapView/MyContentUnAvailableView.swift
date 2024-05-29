@@ -27,5 +27,5 @@ struct MyContentUnAvailableView: View {
 }
 
 #Preview {
-    MyContentUnAvailableView(title: "No Item", image: "globe.desk")
+    MyContentUnAvailableView(title: "No Item", image: img.globe_desk)
 }

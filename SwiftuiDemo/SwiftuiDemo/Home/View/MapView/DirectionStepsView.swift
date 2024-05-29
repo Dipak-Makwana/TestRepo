@@ -17,17 +17,17 @@ struct DirectionStepsView: View {
         NavigationStack {
             List {
                 HStack {
-                   Image(systemName: "mappin.circle.fill")
+                    Image(systemName: img.mappin_circle_fill)
                         .imageScale(.large)
                         .foregroundStyle(.red)
-                    Text("From My Location")
+                    Text(str.fromMyLocation)
                     Spacer()
                 }
                 VStack(alignment: .leading) {
                     if let route {
                         ForEach(1..<route.steps.count,id: \.self) { index in
                             
-                            let prefix = transportType == .automobile ? "Drive" : "Walk"
+                            let prefix = transportType == .automobile ? str.drive : str.walk
                             let distance = route.steps[index].distance
                             let instructions = route.steps[index].instructions
                             Text("\(prefix) \(MapManager.distance(meters: distance))")
@@ -38,7 +38,7 @@ struct DirectionStepsView: View {
                 }
             }
             .listStyle(.plain)
-            .navigationTitle("Steps")
+            .navigationTitle(str.steps)
             .navigationBarTitleDisplayMode(.inline)
         }
     }

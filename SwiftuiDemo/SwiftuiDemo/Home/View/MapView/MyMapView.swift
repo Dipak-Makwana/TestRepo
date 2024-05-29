@@ -20,14 +20,6 @@ struct MyMapView: View {
     var body: some View {
         Map(position: $cameraPosition) {
             UserAnnotation()
-//            if let placemarks = destination?.placemarks {
-//                ForEach(placemarks) { placemark in
-//                    Marker(coordinate: placemark.coordinate) {
-//                        Label(placemark.name, systemImage: "star")
-//                    }
-//                    .tint(.yellow)
-//                }
-//            }
         }
         .onAppear {
             destination = destinations.first

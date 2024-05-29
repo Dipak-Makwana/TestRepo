@@ -13,7 +13,7 @@ struct LocationCell: View {
     @Environment(\.modelContext) private var modelContext
     var body: some View {
         HStack {
-            Image(systemName: "globe")
+            Image(systemName: img.globe)
                 .imageScale(.large)
                 .foregroundColor(.accentColor)
             VStack(alignment: .leading) {
@@ -27,7 +27,7 @@ struct LocationCell: View {
             Button(role: .destructive) {
                 modelContext.delete(destination)
             } label: {
-                Label("Delete", systemImage: "trash")
+                Label(str.delete, systemImage: img.trash)
             }
         }
     }

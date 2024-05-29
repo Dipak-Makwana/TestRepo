@@ -19,7 +19,8 @@ struct DestinationView: View {
     @State private var searchText: String = ""
     @State private var selectedPlaceMark: MTPlacemark?
     @State private var isManualMarker: Bool = false
-    
+    @State private var pickerMapStyle: Bool = false
+    @Namespace private var mapScope
     
     private var listPlaceMark: [MTPlacemark] {
         searchPlaceMarks + selectedDestination.placemarks
@@ -34,40 +35,28 @@ struct DestinationView: View {
     @State private var routeDestination: MKMapItem?
     @State private var timeInterval: TimeInterval?
     @State private var transportType =  MKDirectionsTransportType.automobile
+    @State private var mapStyleConfig = MapStyleConfig()
     
     var body: some View {
-        // UserAnnotation()
         setRegionView
         mapView
+            
             .safeAreaInset(edge: .bottom) {
                 VStack {
                     toggleMarker
-                        .padding(.bottom,8)
+                        .padding(8)
                     if !isManualMarker {
-                        searchTextField
-                            .padding(16)
+                        HStack {
+                            searchTextField
+                                .padding()
+                            if !searchPlaceMarks.isEmpty {
+                                removeResultButton
+                            }
+                            mapButtons
+                        }
                     }
                     if routeDisplaying {
-                        HStack {
-                            Button("Clear Route",systemImage: "xmark.circle.fill") {
-                                resetRouteValue()
-                                updateCameraPosition()
-                            }
-                            .buttonStyle(.borderedProminent)
-                            .fixedSize(horizontal: true, vertical: false)
-                            .padding(.bottom,16)
-                            
-                            Button("Show Steps",systemImage: "location.north") {
-                                showSteps.toggle()
-                            }
-                            .buttonStyle(.borderedProminent)
-                            .fixedSize(horizontal: true, vertical: false)
-                            .padding(.bottom,16)
-                            
-                            .sheet(isPresented: $showSteps, content: {
-                                DirectionStepsView(route: $route, transportType: $transportType)
-                            })
-                        }
+                        routeButtons
                     }
                 }
             }
@@ -86,6 +75,7 @@ struct DestinationView: View {
             .onMapCameraChange(frequency: .onEnd, { context in
                 visibleRegion = context.region
             })
+            .mapStyle(mapStyleConfig.mapStyle)
             .onAppear {
                 removeResult()
                 setRegion()
@@ -93,8 +83,68 @@ struct DestinationView: View {
             .onDisappear {
                 removeResult()
             }
-            .navigationTitle("Destination")
+            .navigationTitle(str.destination)
             .navigationBarTitleDisplayMode(.inline)
+    }
+    private var mapButtons: some View {
+        VStack {
+            
+            Button {
+                pickerMapStyle.toggle()
+            } label: {
+                Image(systemName: img.globe_america_fill)
+                    .imageScale(.large)
+            }
+            
+            .padding(8)
+            .background(.thickMaterial)
+            .addBorder(.blue, width: 0.5, cornerRadius: 20)
+//            .clipShape(.circle)
+//            .overlay( /// apply a rounded border
+//                RoundedRectangle(cornerRadius: 20)
+//                    .stroke(.blue, lineWidth: 3)
+//            )
+            .sheet(isPresented: $pickerMapStyle) {
+                MapStyleView(mapConfig: $mapStyleConfig)
+                    .presentationDetents([.height(270)])
+            }
+////            
+////
+//            MapCompass(scope: mapScope)
+//                .mapControlVisibility(.visible)
+//                .background(.thickMaterial)
+//                .clipShape(.circle)
+////            MapScaleView(scope: mapScope)
+////                .mapControlVisibility(.visible)
+////                .background(.thickMaterial)
+////                .clipShape(.circle)
+//            MapPitchToggle(scope: mapScope)
+//                .mapControlVisibility(.visible)
+//                .background(.thickMaterial)
+//                .clipShape(.circle)
+        }
+    }
+    private var routeButtons: some View {
+        HStack {
+            Button(str.clearRoute,systemImage: img.xmark_circle_fill) {
+                resetRouteValue()
+                updateCameraPosition()
+            }
+            .buttonStyle(.borderedProminent)
+            .fixedSize(horizontal: true, vertical: false)
+            .padding(.bottom,16)
+            
+            Button(str.showSteps,systemImage: img.location_north) {
+                showSteps.toggle()
+            }
+            .buttonStyle(.borderedProminent)
+            .fixedSize(horizontal: true, vertical: false)
+            .padding(.bottom,16)
+            
+            .sheet(isPresented: $showSteps, content: {
+                DirectionStepsView(route: $route, transportType: $transportType)
+            })
+        }
     }
     func updateCameraPosition() {
         if let userLocation = locationManager.userLocation {
@@ -135,10 +185,9 @@ struct DestinationView: View {
     }
     private var toggleMarker: some View {
         Toggle(isOn: $isManualMarker) {
-            Label("Tap marker placement is \(isManualMarker ?  "ON" : "OFF")", systemImage: isManualMarker ? "mappin.circle" : "mappin.slash.circle")
+            Label(" \(str.tapMarker) \(isManualMarker ?  str.on : str.off)", systemImage: isManualMarker ? img.mappin_slash : img.mappin_slash_circle)
         }
         .fontWeight(.bold)
-        .padding(.horizontal)
         .toggleStyle(.button)
         .background(.ultraThinMaterial)
         .onChange(of: isManualMarker) {
@@ -146,32 +195,27 @@ struct DestinationView: View {
         }
     }
     private var searchTextField: some View {
-        HStack {
-            TextField("Search...", text: $searchText)
-                .textFieldStyle(.roundedBorder)
-                .focused($searchFieldFocus)
-                .autocorrectionDisabled()
-                .textInputAutocapitalization(.never)
-                .overlay(alignment: .trailing) {
-                    if searchFieldFocus {
-                        Button {
-                            clearSearch()
-                        } label: {
-                            clearImage
-                        }
-                        .offset(x: -5)
+        TextField(str.search, text: $searchText)
+            .textFieldStyle(.roundedBorder)
+            .focused($searchFieldFocus)
+            .autocorrectionDisabled()
+            .textInputAutocapitalization(.never)
+            .overlay(alignment: .trailing) {
+                if searchFieldFocus {
+                    Button {
+                        clearSearch()
+                    } label: {
+                        clearImage
                     }
+                    .offset(x: -5)
                 }
-                .onSubmit {
-                    saveSearchItem()
-                }
-            if !searchPlaceMarks.isEmpty {
-                removeResultButton
             }
-        }
+            .onSubmit {
+                saveSearchItem()
+            }
     }
     private var clearImage: some View {
-        Image(systemName: "xmark.circle.fill")
+        Image(systemName: img.xmark_circle_fill)
     }
     private func clearSearch() {
         searchText = ""
@@ -191,7 +235,7 @@ struct DestinationView: View {
         Button {
             removeResult()
         } label: {
-            Image(systemName: "mappin.slash.circle.fill")
+            Image(systemName: img.mappin_slash_circle_fill)
                 .imageScale(.large)
         }
         .foregroundStyle(.white)
@@ -204,11 +248,11 @@ struct DestinationView: View {
         @Bindable var destination = selectedDestination
         return VStack {
             LabeledContent {
-                TextField("Enter detination name", text: $destination.name)
+                TextField(str.enterDestinationName, text: $destination.name)
                     .textFieldStyle(.roundedBorder)
                     .foregroundColor(.primary)
             } label: {
-                Text("Name")
+                Text(str.name)
             }
             regionButton
         }
@@ -216,10 +260,10 @@ struct DestinationView: View {
     }
     private var regionButton: some View {
         HStack {
-            Text("Adjust map to set the region for your destination")
+            Text(str.adjustMap)
                 .foregroundStyle(.secondary)
             Spacer()
-            Button("Set Region") {
+            Button(str.setRegion) {
                 setRegionValues()
             }
             .buttonStyle(.borderedProminent)
@@ -236,14 +280,15 @@ struct DestinationView: View {
         
     }
     private func markerWithSystemImage(_ place: MTPlacemark) -> Marker<Label<Text,Image>> {
-        return Marker(place.name, systemImage: "star", coordinate: place.coordinate)
+        return Marker(place.name, systemImage: img.star, coordinate: place.coordinate)
     }
     private func marker(_ place: MTPlacemark) -> Marker<Text> {
         return Marker(place.name, coordinate: place.coordinate)
     }
     private var mapView: some View {
         MapReader { proxy in
-            Map(position: $cameraPosition,selection: $selectedPlaceMark) {
+            Map(position: $cameraPosition,selection: $selectedPlaceMark,scope: mapScope) {
+                UserAnnotation()
                 ForEach(listPlaceMark) { place in
                     
                     if isManualMarker {
@@ -292,6 +337,13 @@ struct DestinationView: View {
                 }
                 debugPrint(position)
             }
+            .mapControls {
+                MapUserLocationButton()
+                MapScaleView()
+                MapCompass()
+                MapPitchToggle()
+            }
+            .mapScope(mapScope)
         }
     }
     
@@ -300,9 +352,6 @@ struct DestinationView: View {
         showRoute = false
         route = nil
         selectedPlaceMark = nil
-        //        if let userLocation = locationManager.userLocation {
-        //           // updateCameraPosition()
-        //        }
     }
     private func resetValues() {
         if selectedPlaceMark != nil {
