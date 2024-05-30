@@ -13,11 +13,10 @@ struct LaunchScreenView: View {
             Color.blue.opacity(0.3)
                 .ignoresSafeArea()
             VStack {
-                Image("launchScreen")
+                Image(img.launchScreen)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 200,height: 200)
-                
             }
         }
         .statusBar(hidden: true)

@@ -28,4 +28,5 @@ struct AppImages {
     static let car = "car"
     static let figure_walk = "figure.walk"
     static let map = "map"
+    static let launchScreen = "launchScreen"
 }
