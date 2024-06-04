@@ -10,6 +10,7 @@ import MapKit
 import SwiftData
 
 struct DestinationView: View {
+    
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var locationManager: LocationManager
     @Query(filter: #Predicate<MTPlacemark> {$0.destination == nil }) private var searchPlaceMarks: [MTPlacemark]
@@ -40,7 +41,6 @@ struct DestinationView: View {
     var body: some View {
         setRegionView
         mapView
-            
             .safeAreaInset(edge: .bottom) {
                 VStack {
                     toggleMarker
@@ -88,7 +88,6 @@ struct DestinationView: View {
     }
     private var mapButtons: some View {
         VStack {
-            
             Button {
                 pickerMapStyle.toggle()
             } label: {
@@ -183,6 +182,7 @@ struct DestinationView: View {
     private func removeResult() {
         MapManager.removeSearchResults(modelContext)
     }
+    
     private var toggleMarker: some View {
         Toggle(isOn: $isManualMarker) {
             Label(" \(str.tapMarker) \(isManualMarker ?  str.on : str.off)", systemImage: isManualMarker ? img.mappin_slash : img.mappin_slash_circle)
@@ -277,8 +277,8 @@ struct DestinationView: View {
             destination.latitudeDelta = visibleRegion.span.latitudeDelta
             destination.longitudeDelta = visibleRegion.span.longitudeDelta
         }
-        
     }
+    
     private func markerWithSystemImage(_ place: MTPlacemark) -> Marker<Label<Text,Image>> {
         return Marker(place.name, systemImage: img.star, coordinate: place.coordinate)
     }
@@ -290,7 +290,6 @@ struct DestinationView: View {
             Map(position: $cameraPosition,selection: $selectedPlaceMark,scope: mapScope) {
                 UserAnnotation()
                 ForEach(listPlaceMark) { place in
-                    
                     if isManualMarker {
                         if place.destination != nil {
                             markerWithSystemImage(place)
@@ -323,7 +322,7 @@ struct DestinationView: View {
                     }
                     if let route, routeDisplaying {
                         MapPolyline(route.polyline)
-                            .stroke(.blue,lineWidth: 6)
+                            .stroke(.blue,lineWidth: 7)
                     }
                 }
             }
@@ -387,6 +386,5 @@ struct DestinationView: View {
     return NavigationStack {
         DestinationView(selectedDestination: destination)
             .modelContainer(Destination.preview)
-        
     }
 }

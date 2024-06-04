@@ -16,7 +16,6 @@ extension LocationDetailView {
     }
 }
 
-
 struct LocationDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var name: String = ""
@@ -34,7 +33,6 @@ struct LocationDetailView: View {
         formatter.unitsStyle = .abbreviated
         formatter.allowedUnits = [.hour,.minute]
         return formatter.string(from: timeInterval)
-        
     }
     
     private var nameAndAddressTextField: some View {
@@ -70,7 +68,7 @@ struct LocationDetailView: View {
             .frame(height: 200)
             .padding()
     }
-    private var  addOrRemoveButton: some View {
+    private func  addOrRemoveButton(inList: Bool) -> some View {
         let inList = (selectedPlacemark != nil && selectedPlacemark?.destination != nil)
         return Button {
             if let selectedPlacemark {
@@ -85,7 +83,11 @@ struct LocationDetailView: View {
         } label: {
             Label(inList ? str.remove : str.add, systemImage: inList ? img.minus_circle : img.plus_circle)
         }
+        .buttonStyle(.borderedProminent)
+        .tint(inList ? .red : .green)
+        .disabled(name.isEmpty || isChanged)
     }
+    
     var body: some View {
         VStack {
             HStack {
@@ -107,16 +109,13 @@ struct LocationDetailView: View {
             }
             HStack {
                 Spacer()
-//                if let _ = destination {
-//                    let inList = (selectedPlacemark != nil && selectedPlacemark?.destination != nil)
-//                    addOrRemoveButton
-//                        .buttonStyle(.borderedProminent)
-//                        .tint(inList ? .red : .green)
-//                        .disabled(name.isEmpty || isChanged)
-//                }
-//                else {
+                if let _ = destination {
+                    let inList = (selectedPlacemark != nil && selectedPlacemark?.destination != nil)
+                    addOrRemoveButton(inList: inList)
+                }
+                else {
                     openInMapsButtons
-               // }
+                }
             }
             Spacer()
         }
@@ -124,7 +123,6 @@ struct LocationDetailView: View {
         .task(id: selectedPlacemark) {
              await fetchLookArroundScene()
         }
-        
         .onAppear {
             setDefaultValue()
         }

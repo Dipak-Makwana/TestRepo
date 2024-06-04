@@ -28,5 +28,9 @@ struct AppImages {
     static let car = "car"
     static let figure_walk = "figure.walk"
     static let map = "map"
+    static let cart = "cart"
     static let launchScreen = "launchScreen"
+    static let search = "magnifyingglass"
+    static let profile = "person.fill"
+    static let home = "house.and.flag.circle"
 }

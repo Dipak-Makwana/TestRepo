@@ -54,11 +54,11 @@ extension TabItem {
     
     var image: String? {
         switch self {
-        case .home: "house.and.flag.circle"
-        case .destination: "house.and.flag.circle"
-        case .map: "house.and.flag.circle"
-        case .cart: "house.and.flag.circle"
-        case .profile: "house.and.flag.circle"
+        case .home: img.home 
+        case .destination: img.search
+        case .map: img.map
+        case .cart: img.cart
+        case .profile: img.profile
         }
     }
     
@@ -105,7 +105,7 @@ extension TabItem {
         case .destination:
             DestinationListView()
         case .map:
-            MapView()
+            DestinationListView()
         case .cart:
             CartView()
         case .profile:
