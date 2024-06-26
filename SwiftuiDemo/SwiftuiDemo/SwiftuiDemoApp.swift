@@ -46,6 +46,8 @@ struct SwiftuiDemoApp: App {
         })
     }
     
+    
+    
     private var contentView: some View {
         ContentView()
             .environment(\.showError) { error, instruction  in

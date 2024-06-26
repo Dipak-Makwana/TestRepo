@@ -14,6 +14,7 @@
 		ED0340132BD7721300614F64 /* SwiftuiDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0340122BD7721300614F64 /* SwiftuiDemoTests.swift */; };
 		ED03401D2BD7721300614F64 /* SwiftuiDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED03401C2BD7721300614F64 /* SwiftuiDemoUITests.swift */; };
 		ED03401F2BD7721300614F64 /* SwiftuiDemoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED03401E2BD7721300614F64 /* SwiftuiDemoUITestsLaunchTests.swift */; };
+		ED03CAF42C195EA500C4D370 /* ScrollViewDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED03CAF32C195EA500C4D370 /* ScrollViewDemo.swift */; };
 		ED09ED5C2BF7070A001E3E68 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED09ED5B2BF7070A001E3E68 /* LocationManager.swift */; };
 		ED09ED5E2BF743A0001E3E68 /* LocationDeniedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED09ED5D2BF743A0001E3E68 /* LocationDeniedView.swift */; };
 		ED12BCED2BECC92D00F56FEC /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED12BCEC2BECC92D00F56FEC /* NetworkMonitor.swift */; };
@@ -21,6 +22,7 @@
 		ED3A44ED2BFBAF1A00520FBA /* LaunchScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3A44EC2BFBAF1A00520FBA /* LaunchScreenView.swift */; };
 		ED97DB932BFB6A9000EA472D /* DestinationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED97DB922BFB6A9000EA472D /* DestinationView.swift */; };
 		EDB4B04D2C05F599004B5F39 /* DirectionStepsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB4B04C2C05F599004B5F39 /* DirectionStepsView.swift */; };
+		EDC006982C12E60900382662 /* CustomPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC006972C12E60900382662 /* CustomPopoverView.swift */; };
 		EDC232272C0724A500FDBC88 /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC232262C0724A500FDBC88 /* ViewExtension.swift */; };
 		EDC232292C07260900FDBC88 /* AppStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC232282C07260900FDBC88 /* AppStrings.swift */; };
 		EDC2322B2C07335500FDBC88 /* AppImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC2322A2C07335500FDBC88 /* AppImages.swift */; };
@@ -76,13 +78,16 @@
 		ED0340182BD7721300614F64 /* SwiftuiDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftuiDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED03401C2BD7721300614F64 /* SwiftuiDemoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftuiDemoUITests.swift; sourceTree = "<group>"; };
 		ED03401E2BD7721300614F64 /* SwiftuiDemoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftuiDemoUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		ED03CAF32C195EA500C4D370 /* ScrollViewDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewDemo.swift; sourceTree = "<group>"; };
 		ED09ED5B2BF7070A001E3E68 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		ED09ED5D2BF743A0001E3E68 /* LocationDeniedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDeniedView.swift; sourceTree = "<group>"; };
 		ED12BCEC2BECC92D00F56FEC /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
+		ED1B4A972C0EFA8B00348299 /* Demo-Dev.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Demo-Dev.xcconfig"; sourceTree = "<group>"; };
 		ED1E244C2BDE79AC00C0FB02 /* HomeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDetailView.swift; sourceTree = "<group>"; };
 		ED3A44EC2BFBAF1A00520FBA /* LaunchScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenView.swift; sourceTree = "<group>"; };
 		ED97DB922BFB6A9000EA472D /* DestinationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationView.swift; sourceTree = "<group>"; };
 		EDB4B04C2C05F599004B5F39 /* DirectionStepsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionStepsView.swift; sourceTree = "<group>"; };
+		EDC006972C12E60900382662 /* CustomPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopoverView.swift; sourceTree = "<group>"; };
 		EDC232262C0724A500FDBC88 /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		EDC232282C07260900FDBC88 /* AppStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStrings.swift; sourceTree = "<group>"; };
 		EDC2322A2C07335500FDBC88 /* AppImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppImages.swift; sourceTree = "<group>"; };
@@ -160,6 +165,7 @@
 			children = (
 				EDFB16F02BDBA8640072FEB0 /* Home */,
 				EDFB16EE2BDB6BAC0072FEB0 /* AppTabView.swift */,
+				ED1B4A972C0EFA8B00348299 /* Demo-Dev.xcconfig */,
 				ED0340012BD7720F00614F64 /* SwiftuiDemoApp.swift */,
 				ED0340032BD7720F00614F64 /* ContentView.swift */,
 				ED0340052BD7721200614F64 /* Assets.xcassets */,
@@ -245,6 +251,8 @@
 				EDD83A842BDE9A6000E46AFF /* UserCell.swift */,
 				EDC674C32BDF87E0006AECB0 /* ErrorView.swift */,
 				ED3A44EC2BFBAF1A00520FBA /* LaunchScreenView.swift */,
+				EDC006972C12E60900382662 /* CustomPopoverView.swift */,
+				ED03CAF32C195EA500C4D370 /* ScrollViewDemo.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -405,7 +413,9 @@
 				EDD83A852BDE9A6000E46AFF /* UserCell.swift in Sources */,
 				ED09ED5C2BF7070A001E3E68 /* LocationManager.swift in Sources */,
 				EDD83A872BDE9DEC00E46AFF /* Image.swift in Sources */,
+				EDC006982C12E60900382662 /* CustomPopoverView.swift in Sources */,
 				ED0340042BD7720F00614F64 /* ContentView.swift in Sources */,
+				ED03CAF42C195EA500C4D370 /* ScrollViewDemo.swift in Sources */,
 				EDDEAF182C00606700D7A9DC /* MyContentUnAvailableView.swift in Sources */,
 				EDC232272C0724A500FDBC88 /* ViewExtension.swift in Sources */,
 				EDB4B04D2C05F599004B5F39 /* DirectionStepsView.swift in Sources */,
